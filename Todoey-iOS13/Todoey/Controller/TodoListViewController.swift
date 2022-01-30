@@ -31,11 +31,13 @@ class TodoListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        cell.textLabel?.text = itemArray[indexPath.row].title
-        if itemArray[indexPath.row].done == true {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        
+        let item = itemArray[indexPath.row]
+        cell.textLabel?.text = item.title
+        if item.done == true {
+            cell.accessoryType = .checkmark
         } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+            cell.accessoryType = .none
         }
         return cell
     }
@@ -44,11 +46,7 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // print(item[indexPath.row])
         
-        if itemArray[indexPath.row].done == false {
-            itemArray[indexPath.row].done = true
-        } else {
-            itemArray[indexPath.row].done = false
-        }
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
         tableView.reloadData()
         
