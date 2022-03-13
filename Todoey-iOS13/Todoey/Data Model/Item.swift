@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Item : Encodable {
+struct Item : Encodable , Decodable {
     var title : String = ""
     var done : Bool = false
 }

@@ -10,7 +10,6 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     var itemArray = [Item]()
-    // initial data on mobile
     // let defaults = UserDefaults.standard
     let dataPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     
@@ -19,9 +18,7 @@ class TodoListViewController: UITableViewController {
         
         print(dataPath!)
         // load data
-        var item1 = Item()
-        item1.title = "hihihi"
-        itemArray.append(item1)
+        self.loadData()
 //        if let item = defaults.array(forKey: "TodoListArray") as? [Item] {
 //            self.itemArray = item
 //        }
@@ -54,9 +51,7 @@ class TodoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
-            var newItem = Item()
-            newItem.title = textField.text!
-            self.itemArray.append(newItem)
+            self.itemArray.append(Item(title: textField.text!, done: false))
             // set data on device
             //self.defaults.set(self.itemArray, forKey: "TodoListArray")
             self.saveItems()
@@ -80,4 +75,14 @@ class TodoListViewController: UITableViewController {
         tableView.reloadData()
     }
 
+    func loadData() {
+        if let data = try? Data(contentsOf: self.dataPath!){
+            let decoder = PropertyListDecoder()
+            do {
+                self.itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decode item array \(error)")
+            }
+        }
+    }
 } 
